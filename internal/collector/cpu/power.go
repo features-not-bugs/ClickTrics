@@ -30,6 +30,7 @@ type PowerRow struct {
 	PowerPkgWatts         float32   `ch:"power_pkg_watts"`
 	TempPkgC              float32   `ch:"temp_pkg_c"`
 	ThermalThrottleEvents uint64    `ch:"thermal_throttle_events"`
+	UncoreFreqHz          uint64    `ch:"uncore_freq_hz"`
 }
 
 // PowerCollector reads RAPL energy + package thermal MSRs for each

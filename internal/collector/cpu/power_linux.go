@@ -24,7 +24,11 @@ const (
 	msrPP1EnergyStatus  = 0x641 // MSR_PP1_ENERGY_STATUS
 	msrDRAMEnergyStatus = 0x619 // MSR_DRAM_ENERGY_STATUS
 	msrPkgThermStatus   = 0x1B1 // IA32_PACKAGE_THERM_STATUS
+	msrUncorePerfStatus = 0x621 // MSR_UNCORE_PERF_STATUS — bits 0:6 = ratio (× 100 MHz)
 )
+
+// uncoreRatioUnitHz is the per-ratio-step frequency (100 MHz).
+const uncoreRatioUnitHz = 100_000_000
 
 // pkgState is retained across ticks: prior energy for power-delta, and the
 // running count of thermal throttle events.
@@ -230,5 +234,12 @@ func readPackage(st *pkgState, host string, pkgID int, now time.Time) PowerRow {
 		}
 	}
 	r.ThermalThrottleEvents = st.throttleEvents
+
+	// Uncore frequency (package-scoped). Bits 0:6 of MSR 0x621 are the current
+	// uncore ratio — multiply by 100 MHz to get Hz. Silently skipped on parts
+	// that don't implement it (pre-Haswell Intel, most AMD).
+	if v, err := readPkgMSR(st.cpu, msrUncorePerfStatus); err == nil {
+		r.UncoreFreqHz = (v & 0x7F) * uncoreRatioUnitHz
+	}
 	return r
 }
