@@ -13,15 +13,28 @@
       "title": "Overview",
       "id": 1,
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
       "panels": []
     },
     {
       "type": "stat",
       "title": "Uptime",
       "id": 10,
-      "gridPos": { "h": 3, "w": 6, "x": 0, "y": 1 },
-      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${datasource}"
+      },
       "targets": [
         {
           "refId": "A",
@@ -31,20 +44,38 @@
           "rawSql": "SELECT $__timeInterval(ts) AS time, max(uptime_seconds) AS v FROM ${database}.system_info WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
         }
       ],
-      "fieldConfig": { "defaults": { "unit": "s" } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      },
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "textMode": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
       }
     },
     {
       "type": "stat",
-      "title": "Load (1m)",
+      "title": "Load",
       "id": 11,
-      "gridPos": { "h": 3, "w": 6, "x": 6, "y": 1 },
-      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${datasource}"
+      },
       "targets": [
         {
           "refId": "A",
@@ -61,9 +92,18 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 4 },
-              { "color": "red", "value": 8 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 4
+              },
+              {
+                "color": "red",
+                "value": 8
+              }
             ]
           }
         }
@@ -72,15 +112,29 @@
         "colorMode": "value",
         "graphMode": "area",
         "textMode": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
       }
     },
     {
       "type": "stat",
       "title": "Processes",
       "id": 12,
-      "gridPos": { "h": 3, "w": 6, "x": 12, "y": 1 },
-      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${datasource}"
+      },
       "targets": [
         {
           "refId": "A",
@@ -90,20 +144,38 @@
           "rawSql": "SELECT $__timeInterval(ts) AS time, avg(total) AS v FROM ${database}.process_summary WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
         }
       ],
-      "fieldConfig": { "defaults": { "unit": "none" } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        }
+      },
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "textMode": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
       }
     },
     {
       "type": "stat",
       "title": "Zombies",
       "id": 13,
-      "gridPos": { "h": 3, "w": 6, "x": 18, "y": 1 },
-      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${datasource}"
+      },
       "targets": [
         {
           "refId": "A",
@@ -119,8 +191,14 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 1 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
             ]
           }
         }
@@ -129,15 +207,86 @@
         "colorMode": "value",
         "graphMode": "area",
         "textMode": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "CPU used",
+      "id": 14,
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 4
+      },
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "editorType": "sql",
+          "format": 0,
+          "queryType": "timeseries",
+          "rawSql": "SELECT $__timeInterval(ts) AS time, avg(100 - idle_pct) AS v FROM ${database}.cpu_core_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
       }
     },
     {
       "type": "gauge",
       "title": "Memory used",
-      "id": 14,
-      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 4 },
-      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "id": 15,
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 4
+      },
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${datasource}"
+      },
       "targets": [
         {
           "refId": "A",
@@ -155,124 +304,185 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 75 },
-              { "color": "red", "value": 90 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
             ]
           }
         }
       },
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
     },
     {
-      "type": "gauge",
-      "title": "Swap used",
-      "id": 15,
-      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 4 },
-      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
-      "targets": [
-        {
-          "refId": "A",
-          "editorType": "sql",
-          "format": 0,
-          "queryType": "timeseries",
-          "rawSql": "SELECT $__timeInterval(ts) AS time, avg(if(swap_total_bytes=0, 0, (swap_total_bytes - swap_free_bytes) / swap_total_bytes * 100)) AS v FROM ${database}.memory_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percent",
-          "min": 0,
-          "max": 100,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 25 },
-              { "color": "red", "value": 75 }
-            ]
-          }
-        }
-      },
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
-    },
-    {
-      "type": "gauge",
-      "title": "File descriptors",
+      "type": "stat",
+      "title": "Network Rx / Tx",
       "id": 16,
-      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 4 },
-      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 4
+      },
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${datasource}"
+      },
       "targets": [
         {
           "refId": "A",
           "editorType": "sql",
           "format": 0,
           "queryType": "timeseries",
-          "rawSql": "SELECT $__timeInterval(ts) AS time, avg(if(fds_max=0, 0, fds_allocated / fds_max * 100)) AS v FROM ${database}.system_info WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+          "rawSql": "SELECT time, sum(rx) AS Rx, sum(tx) AS Tx FROM (SELECT time, iface, greatest(0, (rx_cur - rx_prev) / greatest($__interval_s, 1)) AS rx, greatest(0, (tx_cur - tx_prev) / greatest($__interval_s, 1)) AS tx FROM (SELECT time, iface, rx_cur, tx_cur, row_number() OVER w AS rn, lagInFrame(rx_cur) OVER w AS rx_prev, lagInFrame(tx_cur) OVER w AS tx_prev FROM (SELECT $__timeInterval(ts) AS time, iface, max(rx_bytes) AS rx_cur, max(tx_bytes) AS tx_cur FROM ${database}.network_interface WHERE host='${host}' AND iface != 'lo' AND $__timeFilter(ts) GROUP BY time, iface) WINDOW w AS (PARTITION BY iface ORDER BY time)) WHERE rn > 1) GROUP BY time ORDER BY time"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "percent",
-          "min": 0,
-          "max": 100,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 75 },
-              { "color": "red", "value": 90 }
-            ]
-          }
+          "unit": "Bps"
         }
       },
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
     },
     {
-      "type": "gauge",
-      "title": "Conntrack used",
+      "type": "stat",
+      "title": "Disk space / IOPS",
       "id": 17,
-      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 4 },
-      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 4
+      },
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${datasource}"
+      },
       "targets": [
         {
           "refId": "A",
           "editorType": "sql",
           "format": 0,
           "queryType": "timeseries",
-          "rawSql": "SELECT $__timeInterval(ts) AS time, avg(if(max=0, 0, count / max * 100)) AS v FROM ${database}.network_conntrack WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+          "rawSql": "SELECT time, argMax(pct, total) AS Space FROM (SELECT $__timeInterval(ts) AS time, mount_point, avg(size_total_bytes) AS total, avg(if(size_total_bytes=0, 0, size_used_bytes / size_total_bytes * 100)) AS pct FROM ${database}.filesystem_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, mount_point) GROUP BY time ORDER BY time"
+        },
+        {
+          "refId": "B",
+          "editorType": "sql",
+          "format": 0,
+          "queryType": "timeseries",
+          "rawSql": "SELECT time, sum(iops) AS IOPS FROM (SELECT time, device, (greatest(0, r_cur - r_prev) + greatest(0, w_cur - w_prev)) / greatest($__interval_s, 1) AS iops FROM (SELECT time, device, r_cur, w_cur, row_number() OVER win AS rn, lagInFrame(r_cur) OVER win AS r_prev, lagInFrame(w_cur) OVER win AS w_prev FROM (SELECT $__timeInterval(ts) AS time, device, max(reads) AS r_cur, max(writes) AS w_cur FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device) WINDOW win AS (PARTITION BY device ORDER BY time)) WHERE rn > 1) GROUP BY time ORDER BY time"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "percent",
-          "min": 0,
-          "max": 100,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 60 },
-              { "color": "red", "value": 85 }
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Space"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "displayName",
+                "value": "Space used"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IOPS"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "iops"
+              },
+              {
+                "id": "displayName",
+                "value": "IOPS"
+              }
             ]
           }
-        }
+        ]
       },
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
     },
     {
       "type": "row",
       "title": "CPU & Scheduling",
       "id": 100,
-      "collapsed": true,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 },
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
       "panels": [
         {
           "type": "timeseries",
-          "title": "CPU usage per core (100 - idle%)",
+          "title": "CPU usage per core",
           "id": 101,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 10
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -291,16 +501,30 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "showLegend": false }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "CPU breakdown (avg across cores)",
+          "title": "CPU breakdown",
           "id": 102,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 10 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -313,20 +537,40 @@
           "fieldConfig": {
             "defaults": {
               "unit": "percent",
-              "custom": { "stacking": { "mode": "normal" } }
+              "custom": {
+                "stacking": {
+                  "mode": "normal"
+                }
+              }
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Load average (1 / 5 / 15 min)",
+          "title": "Load average",
           "id": 103,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 18
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -336,18 +580,38 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(load1) AS load1, avg(load5) AS load5, avg(load15) AS load15 FROM ${database}.cpu_system_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "short" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Run queue (running / blocked)",
+          "title": "Run queue",
           "id": 104,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 18
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -357,18 +621,38 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(procs_running) AS running, avg(procs_blocked) AS blocked FROM ${database}.cpu_system_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "none" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "CPU pressure (PSI)",
+          "title": "CPU pressure",
           "id": 105,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 26 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 26
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -378,39 +662,80 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(some_avg10) AS some_avg10, avg(some_avg60) AS some_avg60, avg(some_avg300) AS some_avg300, avg(full_avg10) AS full_avg10, avg(full_avg60) AS full_avg60, avg(full_avg300) AS full_avg300 FROM ${database}.pressure_stall WHERE host='${host}' AND resource='cpu' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "percent", "min": 0 } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 0
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Scheduling rates (context switches / interrupts / softirqs / forks)",
+          "title": "Scheduling rates",
           "id": 106,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 26 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 26
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, (max(context_switches) - min(context_switches)) / greatest($__interval_s, 1) AS ctxt_sw, (max(interrupts) - min(interrupts)) / greatest($__interval_s, 1) AS interrupts, (max(softirqs) - min(softirqs)) / greatest($__interval_s, 1) AS softirqs, (max(forks) - min(forks)) / greatest($__interval_s, 1) AS forks FROM ${database}.cpu_system_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+              "rawSql": "SELECT time, greatest(0, (ctxt_cur - ctxt_prev) / greatest($__interval_s, 1)) AS ctxt_sw, greatest(0, (int_cur - int_prev) / greatest($__interval_s, 1)) AS interrupts, greatest(0, (si_cur - si_prev) / greatest($__interval_s, 1)) AS softirqs, greatest(0, (fk_cur - fk_prev) / greatest($__interval_s, 1)) AS forks FROM (SELECT time, ctxt_cur, int_cur, si_cur, fk_cur, row_number() OVER w AS rn, lagInFrame(ctxt_cur) OVER w AS ctxt_prev, lagInFrame(int_cur) OVER w AS int_prev, lagInFrame(si_cur) OVER w AS si_prev, lagInFrame(fk_cur) OVER w AS fk_prev FROM (SELECT $__timeInterval(ts) AS time, max(context_switches) AS ctxt_cur, max(interrupts) AS int_cur, max(softirqs) AS si_cur, max(forks) AS fk_cur FROM ${database}.cpu_system_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time) WINDOW w AS (ORDER BY time)) WHERE rn > 1 ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "ops" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Effective frequency per core",
           "id": 107,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 34 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 34
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -427,16 +752,30 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "showLegend": false }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Core frequency per core",
           "id": 112,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 34 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 34
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -453,16 +792,30 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "showLegend": false }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Temperature per core",
           "id": 108,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 42 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 42
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -479,16 +832,30 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "showLegend": false }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Voltage per core (Vcore)",
+          "title": "Voltage per core",
           "id": 109,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 42 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 42
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -505,16 +872,30 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "showLegend": false }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Package power (RAPL)",
+          "title": "Package power",
           "id": 110,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 50 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 50
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -531,16 +912,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Uncore frequency per package",
           "id": 113,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 50 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 50
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -557,16 +954,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Thermal throttle events (cumulative)",
+          "title": "Thermal throttle events",
           "id": 111,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 58 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 58
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -583,8 +996,16 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         }
       ]
@@ -593,15 +1014,28 @@
       "type": "row",
       "title": "Memory",
       "id": 200,
-      "collapsed": true,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 10 },
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
       "panels": [
         {
           "type": "timeseries",
           "title": "Memory breakdown",
           "id": 201,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 11 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 11
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -614,20 +1048,40 @@
           "fieldConfig": {
             "defaults": {
               "unit": "bytes",
-              "custom": { "stacking": { "mode": "normal" } }
+              "custom": {
+                "stacking": {
+                  "mode": "normal"
+                }
+              }
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Swap (used / cached)",
+          "title": "Swap",
           "id": 202,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 11 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 11
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -637,18 +1091,38 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(swap_total_bytes - swap_free_bytes) AS swap_used, avg(swap_cached_bytes) AS swap_cached FROM ${database}.memory_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "bytes" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Memory pressure (PSI)",
+          "title": "Memory pressure",
           "id": 203,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 19 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 19
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -658,18 +1132,39 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(some_avg10) AS some_avg10, avg(some_avg60) AS some_avg60, avg(some_avg300) AS some_avg300, avg(full_avg10) AS full_avg10, avg(full_avg60) AS full_avg60, avg(full_avg300) AS full_avg300 FROM ${database}.pressure_stall WHERE host='${host}' AND resource='memory' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "percent", "min": 0 } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 0
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Memory regions (anon / mapped / shmem / dirty / writeback / slab)",
+          "title": "Memory regions",
           "id": 204,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 19 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 19
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -679,18 +1174,38 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(anon_pages_bytes) AS anon, avg(mapped_bytes) AS mapped, avg(shmem_bytes) AS shmem, avg(dirty_bytes) AS dirty, avg(writeback_bytes) AS writeback, avg(sreclaimable_bytes) AS slab_reclaim, avg(sunreclaim_bytes) AS slab_unreclaim FROM ${database}.memory_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "bytes" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "HugePages (total / free)",
+          "title": "HugePages",
           "id": 205,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 27 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 27
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -700,39 +1215,79 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(huge_pages_total) AS total, avg(huge_pages_free) AS free FROM ${database}.memory_stats WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "none" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Page rates (faults / swap / scans) per second",
+          "title": "Page rates per second",
           "id": 206,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 27 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 27
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, (max(pgfault) - min(pgfault)) / greatest($__interval_s, 1) AS minor_fault, (max(pgmajfault) - min(pgmajfault)) / greatest($__interval_s, 1) AS major_fault, (max(pswpin) - min(pswpin)) / greatest($__interval_s, 1) AS swap_in, (max(pswpout) - min(pswpout)) / greatest($__interval_s, 1) AS swap_out, (max(pgscan_direct) - min(pgscan_direct)) / greatest($__interval_s, 1) AS scan_direct, (max(pgscan_kswapd) - min(pgscan_kswapd)) / greatest($__interval_s, 1) AS scan_kswapd FROM ${database}.memory_vmstat WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+              "rawSql": "SELECT time, greatest(0, (min_cur - min_prev) / greatest($__interval_s, 1)) AS minor_fault, greatest(0, (maj_cur - maj_prev) / greatest($__interval_s, 1)) AS major_fault, greatest(0, (swi_cur - swi_prev) / greatest($__interval_s, 1)) AS swap_in, greatest(0, (swo_cur - swo_prev) / greatest($__interval_s, 1)) AS swap_out, greatest(0, (sd_cur - sd_prev) / greatest($__interval_s, 1)) AS scan_direct, greatest(0, (sk_cur - sk_prev) / greatest($__interval_s, 1)) AS scan_kswapd FROM (SELECT time, min_cur, maj_cur, swi_cur, swo_cur, sd_cur, sk_cur, row_number() OVER w AS rn, lagInFrame(min_cur) OVER w AS min_prev, lagInFrame(maj_cur) OVER w AS maj_prev, lagInFrame(swi_cur) OVER w AS swi_prev, lagInFrame(swo_cur) OVER w AS swo_prev, lagInFrame(sd_cur) OVER w AS sd_prev, lagInFrame(sk_cur) OVER w AS sk_prev FROM (SELECT $__timeInterval(ts) AS time, max(pgfault) AS min_cur, max(pgmajfault) AS maj_cur, max(pswpin) AS swi_cur, max(pswpout) AS swo_cur, max(pgscan_direct) AS sd_cur, max(pgscan_kswapd) AS sk_cur FROM ${database}.memory_vmstat WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time) WINDOW w AS (ORDER BY time)) WHERE rn > 1 ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "ops" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "OOM kills (cumulative)",
+          "title": "OOM kills",
           "id": 207,
-          "gridPos": { "h": 6, "w": 24, "x": 0, "y": 35 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 35
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -742,10 +1297,20 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, max(oom_kill) AS oom_kill FROM ${database}.memory_vmstat WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "none" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "showLegend": false }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false
+            }
           }
         }
       ]
@@ -754,22 +1319,35 @@
       "type": "row",
       "title": "Storage",
       "id": 300,
-      "collapsed": true,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 11 },
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
       "panels": [
         {
           "type": "timeseries",
           "title": "Read throughput per device",
           "id": 301,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 12
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, device, (max(read_sectors) - min(read_sectors)) * 512 / greatest($__interval_s, 1) AS bps FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device ORDER BY time, device"
+              "rawSql": "SELECT time, device, greatest(0, (cur - prev)) * 512 / greatest($__interval_s, 1) AS bps FROM (SELECT time, device, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, device, max(read_sectors) AS cur FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device) WINDOW w AS (PARTITION BY device ORDER BY time)) WHERE rn > 1 ORDER BY time, device"
             }
           ],
           "fieldConfig": {
@@ -779,23 +1357,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Write throughput per device",
           "id": 302,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 12
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, device, (max(write_sectors) - min(write_sectors)) * 512 / greatest($__interval_s, 1) AS bps FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device ORDER BY time, device"
+              "rawSql": "SELECT time, device, greatest(0, (cur - prev)) * 512 / greatest($__interval_s, 1) AS bps FROM (SELECT time, device, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, device, max(write_sectors) AS cur FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device) WINDOW w AS (PARTITION BY device ORDER BY time)) WHERE rn > 1 ORDER BY time, device"
             }
           ],
           "fieldConfig": {
@@ -805,23 +1399,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Read IOPS per device",
           "id": 303,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 20 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 20
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, device, (max(reads) - min(reads)) / greatest($__interval_s, 1) AS iops FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device ORDER BY time, device"
+              "rawSql": "SELECT time, device, greatest(0, (cur - prev) / greatest($__interval_s, 1)) AS iops FROM (SELECT time, device, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, device, max(reads) AS cur FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device) WINDOW w AS (PARTITION BY device ORDER BY time)) WHERE rn > 1 ORDER BY time, device"
             }
           ],
           "fieldConfig": {
@@ -831,23 +1441,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Write IOPS per device",
           "id": 304,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 20 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 20
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, device, (max(writes) - min(writes)) / greatest($__interval_s, 1) AS iops FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device ORDER BY time, device"
+              "rawSql": "SELECT time, device, greatest(0, (cur - prev) / greatest($__interval_s, 1)) AS iops FROM (SELECT time, device, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, device, max(writes) AS cur FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device) WINDOW w AS (PARTITION BY device ORDER BY time)) WHERE rn > 1 ORDER BY time, device"
             }
           ],
           "fieldConfig": {
@@ -857,23 +1483,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Service time per device (ms/op)",
+          "title": "Service time per device",
           "id": 305,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 28 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 28
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, device, if((max(reads) - min(reads)) = 0, 0, (max(read_time_ms) - min(read_time_ms)) / (max(reads) - min(reads))) AS read_ms, if((max(writes) - min(writes)) = 0, 0, (max(write_time_ms) - min(write_time_ms)) / (max(writes) - min(writes))) AS write_ms FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device ORDER BY time, device"
+              "rawSql": "SELECT time, device, if(reads_d = 0, 0, readt_d / reads_d) AS read_ms, if(writes_d = 0, 0, writet_d / writes_d) AS write_ms FROM (SELECT time, device, greatest(0, reads_cur - reads_prev) AS reads_d, greatest(0, readt_cur - readt_prev) AS readt_d, greatest(0, writes_cur - writes_prev) AS writes_d, greatest(0, writet_cur - writet_prev) AS writet_d FROM (SELECT time, device, reads_cur, readt_cur, writes_cur, writet_cur, row_number() OVER w AS rn, lagInFrame(reads_cur) OVER w AS reads_prev, lagInFrame(readt_cur) OVER w AS readt_prev, lagInFrame(writes_cur) OVER w AS writes_prev, lagInFrame(writet_cur) OVER w AS writet_prev FROM (SELECT $__timeInterval(ts) AS time, device, max(reads) AS reads_cur, max(read_time_ms) AS readt_cur, max(writes) AS writes_cur, max(write_time_ms) AS writet_cur FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device) WINDOW w AS (PARTITION BY device ORDER BY time)) WHERE rn > 1) ORDER BY time, device"
             }
           ],
           "fieldConfig": {
@@ -883,23 +1525,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Disk utilisation % (io_time / elapsed)",
+          "title": "Disk utilisation %",
           "id": 306,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 28
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, device, least(100, (max(io_time_ms) - min(io_time_ms)) / greatest($__interval_s * 1000, 1) * 100) AS util FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device ORDER BY time, device"
+              "rawSql": "SELECT time, device, least(100, greatest(0, (cur - prev)) / greatest($__interval_s * 1000, 1) * 100) AS util FROM (SELECT time, device, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, device, max(io_time_ms) AS cur FROM ${database}.disk_io WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, device) WINDOW w AS (PARTITION BY device ORDER BY time)) WHERE rn > 1 ORDER BY time, device"
             }
           ],
           "fieldConfig": {
@@ -911,16 +1569,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "IO queue depth per device",
           "id": 307,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 36 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 36
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -937,16 +1611,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "IO pressure (PSI)",
+          "title": "IO pressure",
           "id": 308,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 36 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 36
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -956,18 +1646,39 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(some_avg10) AS some_avg10, avg(some_avg60) AS some_avg60, avg(some_avg300) AS some_avg300, avg(full_avg10) AS full_avg10, avg(full_avg60) AS full_avg60, avg(full_avg300) AS full_avg300 FROM ${database}.pressure_stall WHERE host='${host}' AND resource='io' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "percent", "min": 0 } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 0
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Filesystem used % per mount",
           "id": 309,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 44 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 44
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -986,16 +1697,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Inodes used % per mount",
           "id": 310,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 44 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 44
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1014,16 +1741,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "table",
-          "title": "Mount points (latest)",
+          "title": "Mount points",
           "id": 311,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 52 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 52
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1036,10 +1779,18 @@
         },
         {
           "type": "table",
-          "title": "SMART drive health (latest)",
+          "title": "SMART drive health",
           "id": 312,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 60 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 60
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1054,8 +1805,16 @@
           "type": "timeseries",
           "title": "Drive temperatures",
           "id": 313,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 68 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 68
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1072,16 +1831,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Wear leveling % (SSD/NVMe)",
+          "title": "Wear leveling %",
           "id": 314,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 68 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 68
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1098,16 +1873,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Drive sector errors (reallocated / pending / uncorrectable / crc)",
+          "title": "Drive sector errors",
           "id": 315,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 76 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 76
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1124,8 +1915,16 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         }
       ]
@@ -1134,22 +1933,35 @@
       "type": "row",
       "title": "Network",
       "id": 400,
-      "collapsed": true,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 12 },
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
       "panels": [
         {
           "type": "timeseries",
           "title": "RX throughput per interface",
           "id": 401,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 13 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 13
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, iface, (max(rx_bytes) - min(rx_bytes)) / greatest($__interval_s, 1) AS bps FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface ORDER BY time, iface"
+              "rawSql": "SELECT time, iface, greatest(0, (cur - prev) / greatest($__interval_s, 1)) AS bps FROM (SELECT time, iface, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, iface, max(rx_bytes) AS cur FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface) WINDOW w AS (PARTITION BY iface ORDER BY time)) WHERE rn > 1 ORDER BY time, iface"
             }
           ],
           "fieldConfig": {
@@ -1159,23 +1971,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "TX throughput per interface",
           "id": 402,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 13 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 13
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, iface, (max(tx_bytes) - min(tx_bytes)) / greatest($__interval_s, 1) AS bps FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface ORDER BY time, iface"
+              "rawSql": "SELECT time, iface, greatest(0, (cur - prev) / greatest($__interval_s, 1)) AS bps FROM (SELECT time, iface, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, iface, max(tx_bytes) AS cur FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface) WINDOW w AS (PARTITION BY iface ORDER BY time)) WHERE rn > 1 ORDER BY time, iface"
             }
           ],
           "fieldConfig": {
@@ -1185,23 +2013,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "RX packets / s",
           "id": 403,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 21 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 21
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, iface, (max(rx_packets) - min(rx_packets)) / greatest($__interval_s, 1) AS pps FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface ORDER BY time, iface"
+              "rawSql": "SELECT time, iface, greatest(0, (cur - prev) / greatest($__interval_s, 1)) AS pps FROM (SELECT time, iface, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, iface, max(rx_packets) AS cur FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface) WINDOW w AS (PARTITION BY iface ORDER BY time)) WHERE rn > 1 ORDER BY time, iface"
             }
           ],
           "fieldConfig": {
@@ -1211,23 +2055,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "TX packets / s",
           "id": 404,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 21 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 21
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, iface, (max(tx_packets) - min(tx_packets)) / greatest($__interval_s, 1) AS pps FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface ORDER BY time, iface"
+              "rawSql": "SELECT time, iface, greatest(0, (cur - prev) / greatest($__interval_s, 1)) AS pps FROM (SELECT time, iface, cur, row_number() OVER w AS rn, lagInFrame(cur) OVER w AS prev FROM (SELECT $__timeInterval(ts) AS time, iface, max(tx_packets) AS cur FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface) WINDOW w AS (PARTITION BY iface ORDER BY time)) WHERE rn > 1 ORDER BY time, iface"
             }
           ],
           "fieldConfig": {
@@ -1237,23 +2097,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "RX errors + dropped / s",
           "id": 405,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 29 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 29
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, iface, (max(rx_errors) - min(rx_errors)) / greatest($__interval_s, 1) AS errors, (max(rx_dropped) - min(rx_dropped)) / greatest($__interval_s, 1) AS dropped FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface ORDER BY time, iface"
+              "rawSql": "SELECT time, iface, greatest(0, (errs_cur - errs_prev) / greatest($__interval_s, 1)) AS errors, greatest(0, (drop_cur - drop_prev) / greatest($__interval_s, 1)) AS dropped FROM (SELECT time, iface, errs_cur, drop_cur, row_number() OVER w AS rn, lagInFrame(errs_cur) OVER w AS errs_prev, lagInFrame(drop_cur) OVER w AS drop_prev FROM (SELECT $__timeInterval(ts) AS time, iface, max(rx_errors) AS errs_cur, max(rx_dropped) AS drop_cur FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface) WINDOW w AS (PARTITION BY iface ORDER BY time)) WHERE rn > 1 ORDER BY time, iface"
             }
           ],
           "fieldConfig": {
@@ -1263,23 +2139,39 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "TX errors + dropped + collisions / s",
           "id": 406,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 29 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 29
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, iface, (max(tx_errors) - min(tx_errors)) / greatest($__interval_s, 1) AS errors, (max(tx_dropped) - min(tx_dropped)) / greatest($__interval_s, 1) AS dropped, (max(tx_collisions) - min(tx_collisions)) / greatest($__interval_s, 1) AS collisions FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface ORDER BY time, iface"
+              "rawSql": "SELECT time, iface, greatest(0, (errs_cur - errs_prev) / greatest($__interval_s, 1)) AS errors, greatest(0, (drop_cur - drop_prev) / greatest($__interval_s, 1)) AS dropped, greatest(0, (coll_cur - coll_prev) / greatest($__interval_s, 1)) AS collisions FROM (SELECT time, iface, errs_cur, drop_cur, coll_cur, row_number() OVER w AS rn, lagInFrame(errs_cur) OVER w AS errs_prev, lagInFrame(drop_cur) OVER w AS drop_prev, lagInFrame(coll_cur) OVER w AS coll_prev FROM (SELECT $__timeInterval(ts) AS time, iface, max(tx_errors) AS errs_cur, max(tx_dropped) AS drop_cur, max(tx_collisions) AS coll_cur FROM ${database}.network_interface WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time, iface) WINDOW w AS (PARTITION BY iface ORDER BY time)) WHERE rn > 1 ORDER BY time, iface"
             }
           ],
           "fieldConfig": {
@@ -1289,16 +2181,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "table",
-          "title": "Interface state (latest)",
+          "title": "Interface state",
           "id": 407,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 37 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 37
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1313,29 +2221,57 @@
           "type": "timeseries",
           "title": "TCP segments in / out / s",
           "id": 408,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 45 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 45
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, (max(in_segs) - min(in_segs)) / greatest($__interval_s, 1) AS in_segs, (max(out_segs) - min(out_segs)) / greatest($__interval_s, 1) AS out_segs FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+              "rawSql": "SELECT time, greatest(0, (in_cur - in_prev) / greatest($__interval_s, 1)) AS in_segs, greatest(0, (out_cur - out_prev) / greatest($__interval_s, 1)) AS out_segs FROM (SELECT time, in_cur, out_cur, row_number() OVER w AS rn, lagInFrame(in_cur) OVER w AS in_prev, lagInFrame(out_cur) OVER w AS out_prev FROM (SELECT $__timeInterval(ts) AS time, max(in_segs) AS in_cur, max(out_segs) AS out_cur FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time) WINDOW w AS (ORDER BY time)) WHERE rn > 1 ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "ops" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "TCP established connections",
           "id": 409,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 45 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 45
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1345,81 +2281,159 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(curr_estab) AS curr_estab FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "none" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "showLegend": false }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "TCP opens (active / passive) / s",
+          "title": "TCP opens / s",
           "id": 410,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 53 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 53
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, (max(active_opens) - min(active_opens)) / greatest($__interval_s, 1) AS active, (max(passive_opens) - min(passive_opens)) / greatest($__interval_s, 1) AS passive FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+              "rawSql": "SELECT time, greatest(0, (act_cur - act_prev) / greatest($__interval_s, 1)) AS active, greatest(0, (pas_cur - pas_prev) / greatest($__interval_s, 1)) AS passive FROM (SELECT time, act_cur, pas_cur, row_number() OVER w AS rn, lagInFrame(act_cur) OVER w AS act_prev, lagInFrame(pas_cur) OVER w AS pas_prev FROM (SELECT $__timeInterval(ts) AS time, max(active_opens) AS act_cur, max(passive_opens) AS pas_cur FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time) WINDOW w AS (ORDER BY time)) WHERE rn > 1 ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "ops" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "TCP retransmits / s (total / lost / fast / slow-start)",
+          "title": "TCP retransmits / s",
           "id": 411,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 53 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 53
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, (max(retrans_segs) - min(retrans_segs)) / greatest($__interval_s, 1) AS total, (max(tcp_lost_retransmit) - min(tcp_lost_retransmit)) / greatest($__interval_s, 1) AS lost, (max(tcp_fast_retrans) - min(tcp_fast_retrans)) / greatest($__interval_s, 1) AS fast, (max(tcp_slow_start_retrans) - min(tcp_slow_start_retrans)) / greatest($__interval_s, 1) AS slow_start FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+              "rawSql": "SELECT time, greatest(0, (tot_cur - tot_prev) / greatest($__interval_s, 1)) AS total, greatest(0, (lost_cur - lost_prev) / greatest($__interval_s, 1)) AS lost, greatest(0, (fast_cur - fast_prev) / greatest($__interval_s, 1)) AS fast, greatest(0, (slow_cur - slow_prev) / greatest($__interval_s, 1)) AS slow_start FROM (SELECT time, tot_cur, lost_cur, fast_cur, slow_cur, row_number() OVER w AS rn, lagInFrame(tot_cur) OVER w AS tot_prev, lagInFrame(lost_cur) OVER w AS lost_prev, lagInFrame(fast_cur) OVER w AS fast_prev, lagInFrame(slow_cur) OVER w AS slow_prev FROM (SELECT $__timeInterval(ts) AS time, max(retrans_segs) AS tot_cur, max(tcp_lost_retransmit) AS lost_cur, max(tcp_fast_retrans) AS fast_cur, max(tcp_slow_start_retrans) AS slow_cur FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time) WINDOW w AS (ORDER BY time)) WHERE rn > 1 ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "ops" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "TCP connection errors / s (fails / resets / listen drops / overflows)",
+          "title": "TCP connection errors / s",
           "id": 412,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 61 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 61
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
               "editorType": "sql",
               "format": 0,
               "queryType": "timeseries",
-              "rawSql": "SELECT $__timeInterval(ts) AS time, (max(attempt_fails) - min(attempt_fails)) / greatest($__interval_s, 1) AS attempt_fails, (max(estab_resets) - min(estab_resets)) / greatest($__interval_s, 1) AS estab_resets, (max(listen_drops) - min(listen_drops)) / greatest($__interval_s, 1) AS listen_drops, (max(listen_overflows) - min(listen_overflows)) / greatest($__interval_s, 1) AS listen_overflows FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
+              "rawSql": "SELECT time, greatest(0, (af_cur - af_prev) / greatest($__interval_s, 1)) AS attempt_fails, greatest(0, (er_cur - er_prev) / greatest($__interval_s, 1)) AS estab_resets, greatest(0, (ld_cur - ld_prev) / greatest($__interval_s, 1)) AS listen_drops, greatest(0, (lo_cur - lo_prev) / greatest($__interval_s, 1)) AS listen_overflows FROM (SELECT time, af_cur, er_cur, ld_cur, lo_cur, row_number() OVER w AS rn, lagInFrame(af_cur) OVER w AS af_prev, lagInFrame(er_cur) OVER w AS er_prev, lagInFrame(ld_cur) OVER w AS ld_prev, lagInFrame(lo_cur) OVER w AS lo_prev FROM (SELECT $__timeInterval(ts) AS time, max(attempt_fails) AS af_cur, max(estab_resets) AS er_cur, max(listen_drops) AS ld_cur, max(listen_overflows) AS lo_cur FROM ${database}.network_tcp WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time) WINDOW w AS (ORDER BY time)) WHERE rn > 1 ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "ops" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Socket states (family / state)",
+          "title": "Socket states",
           "id": 413,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 69 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 69
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1436,16 +2450,32 @@
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
-          "title": "Conntrack (count vs max)",
+          "title": "Conntrack",
           "id": 414,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 77 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 77
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1455,10 +2485,22 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(count) AS count, avg(max) AS max FROM ${database}.network_conntrack WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "none" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         }
       ]
@@ -1467,15 +2509,28 @@
       "type": "row",
       "title": "Processes",
       "id": 500,
-      "collapsed": true,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 },
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
       "panels": [
         {
           "type": "timeseries",
           "title": "Processes by state",
           "id": 501,
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 14 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 14
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1488,20 +2543,40 @@
           "fieldConfig": {
             "defaults": {
               "unit": "none",
-              "custom": { "stacking": { "mode": "normal" } }
+              "custom": {
+                "stacking": {
+                  "mode": "normal"
+                }
+              }
             }
           },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "table",
-          "title": "Top 15 by CPU (user+system, last 1min)",
+          "title": "Top 15 by CPU",
           "id": 502,
-          "gridPos": { "h": 10, "w": 12, "x": 0, "y": 22 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 22
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1514,10 +2589,18 @@
         },
         {
           "type": "table",
-          "title": "Top 15 by RSS (last 1min)",
+          "title": "Top 15 by RSS",
           "id": 503,
-          "gridPos": { "h": 10, "w": 12, "x": 12, "y": 22 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 22
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1530,10 +2613,18 @@
         },
         {
           "type": "table",
-          "title": "Top 15 by FDs (last 1min)",
+          "title": "Top 15 by FDs",
           "id": 504,
-          "gridPos": { "h": 10, "w": 12, "x": 0, "y": 32 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 32
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1546,10 +2637,18 @@
         },
         {
           "type": "table",
-          "title": "Top 15 by threads (last 1min)",
+          "title": "Top 15 by threads",
           "id": 505,
-          "gridPos": { "h": 10, "w": 12, "x": 12, "y": 32 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 32
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1562,10 +2661,18 @@
         },
         {
           "type": "table",
-          "title": "Top 10 by major page faults (last 5min)",
+          "title": "Top 10 by major page faults",
           "id": 506,
-          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 42 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 42
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1582,15 +2689,28 @@
       "type": "row",
       "title": "System",
       "id": 600,
-      "collapsed": true,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 14 },
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
       "panels": [
         {
           "type": "table",
-          "title": "Kernel / OS (latest)",
+          "title": "Kernel / OS",
           "id": 601,
-          "gridPos": { "h": 6, "w": 24, "x": 0, "y": 15 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 15
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1603,10 +2723,18 @@
         },
         {
           "type": "timeseries",
-          "title": "File descriptors (allocated vs max)",
+          "title": "File descriptors",
           "id": 602,
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 21 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 21
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1616,18 +2744,38 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, avg(fds_allocated) AS allocated, avg(fds_max) AS max FROM ${database}.system_info WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "none" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
           }
         },
         {
           "type": "timeseries",
           "title": "Users logged in",
           "id": 603,
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 21 },
-          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 21
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${datasource}"
+          },
           "targets": [
             {
               "refId": "A",
@@ -1637,10 +2785,20 @@
               "rawSql": "SELECT $__timeInterval(ts) AS time, max(users_logged_in) AS users FROM ${database}.system_info WHERE host='${host}' AND $__timeFilter(ts) GROUP BY time ORDER BY time"
             }
           ],
-          "fieldConfig": { "defaults": { "unit": "none" } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none"
+            }
+          },
           "options": {
-            "tooltip": { "mode": "multi", "sort": "asc", "hideZeros": false },
-            "legend": { "showLegend": false }
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false
+            }
           }
         }
       ]
