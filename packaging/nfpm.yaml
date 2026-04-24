@@ -1,0 +1,92 @@
+# nfpm config for building clicktrics .deb (and .rpm) packages.
+# Invoked via the Makefile — VERSION and NFPM_ARCH come from the environment.
+#
+# nfpm docs: https://nfpm.goreleaser.com/
+
+name: clicktrics
+arch: ${NFPM_ARCH}                  # amd64
+platform: linux
+version: ${VERSION}
+section: admin
+priority: optional
+maintainer: Hayden Hansson <hansson.hayden@me.com>
+vendor: features-not-bugs
+homepage: https://github.com/features-not-bugs/clicktrics
+license: MIT
+
+description: |
+  Linux host metrics scraper → ClickHouse → Grafana.
+
+  Collects per-core CPU (via MSRs — APERF/MPERF/TSC + RAPL + thermal),
+  memory, PSI, disk I/O, filesystem, network, TCP counters, sockets,
+  conntrack, processes, and SMART data, shipping rows to ClickHouse
+  for fleet-wide dashboards.
+
+contents:
+  # Binary
+  - src: dist/clicktrics-linux-${NFPM_ARCH}
+    dst: /usr/local/bin/clicktrics
+    file_info:
+      mode: 0755
+
+  # Systemd unit (distro-owned location)
+  - src: deploy/systemd/clicktrics.service
+    dst: /lib/systemd/system/clicktrics.service
+    file_info:
+      mode: 0644
+
+  # Pristine reference copy — always re-installed on every upgrade so
+  # operators can diff their edits against the latest shipped template.
+  # The ACTIVE config at /etc/clicktrics/config.yaml is NOT shipped as a
+  # package file at all; postinstall.sh seeds it from this template only
+  # when absent. That way re-installing (or upgrading) the package never
+  # touches an existing operator-managed config.
+  - src: clicktrics.example.yaml
+    dst: /etc/clicktrics/config.yaml.example
+    file_info:
+      mode: 0644
+
+  # Goose migrations — the binary also embeds these, so `clicktrics migrate up`
+  # works without needing them on disk. Shipped here for operators who want
+  # to apply the schema through their own tooling (e.g. `clickhouse-client
+  # --multiquery < 00001_init.sql`).
+  - src: internal/migrate/migrations/00001_init.sql
+    dst: /usr/share/clicktrics/migrations/00001_init.sql
+    file_info:
+      mode: 0644
+
+  # Grafana dashboard (importable via the UI)
+  - src: deploy/grafana/dashboards/host-overview.json
+    dst: /usr/share/clicktrics/grafana/host-overview.json
+    file_info:
+      mode: 0644
+
+  # Docs
+  - src: README.md
+    dst: /usr/share/doc/clicktrics/README.md
+    file_info:
+      mode: 0644
+
+scripts:
+  postinstall: packaging/scripts/postinstall.sh
+  preremove:   packaging/scripts/preremove.sh
+  postremove:  packaging/scripts/postremove.sh
+
+# Runtime dependencies
+depends:
+  - systemd
+
+# Suggested but not required
+recommends:
+  - clickhouse-client       # for applying schemas on the ClickHouse host
+  - msr-tools               # for host-side MSR debugging with rdmsr
+
+# Conflict with any prior alternative packaging attempts
+conflicts: []
+
+overrides:
+  deb:
+    scripts:
+      postinstall: packaging/scripts/postinstall.sh
+      preremove:   packaging/scripts/preremove.sh
+      postremove:  packaging/scripts/postremove.sh

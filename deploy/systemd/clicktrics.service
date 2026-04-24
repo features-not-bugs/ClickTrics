@@ -1,0 +1,42 @@
+[Unit]
+Description=ClickTrics host metrics scraper
+Documentation=https://github.com/features-not-bugs/clicktrics
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/clicktrics --config=/etc/clicktrics/config.yaml
+Restart=on-failure
+RestartSec=5s
+
+# Capabilities:
+#   CAP_SYS_RAWIO       — MSR reads (/dev/cpu/*/msr) + SATA/SAS SMART (SG_IO)
+#   CAP_SYS_PTRACE      — read /proc/[pid] for all processes
+#   CAP_SYS_ADMIN       — NVMe SMART (NVME_IOCTL_ADMIN_CMD). Drop if no NVMe.
+#   CAP_DAC_READ_SEARCH — bypass DAC for /proc, /sys, /var/run/utmp
+AmbientCapabilities=CAP_SYS_RAWIO CAP_SYS_PTRACE CAP_SYS_ADMIN CAP_DAC_READ_SEARCH
+CapabilityBoundingSet=CAP_SYS_RAWIO CAP_SYS_PTRACE CAP_SYS_ADMIN CAP_DAC_READ_SEARCH
+
+# Resource ceiling — adjust per fleet size / process count.
+MemoryMax=256M
+CPUQuota=100%
+
+# Hardening.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+RestrictNamespaces=true
+RestrictRealtime=true
+LockPersonality=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+SystemCallArchitectures=native
+
+User=clicktrics
+Group=clicktrics
+
+[Install]
+WantedBy=multi-user.target

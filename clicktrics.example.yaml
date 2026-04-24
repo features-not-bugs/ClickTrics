@@ -1,0 +1,107 @@
+# ClickTrics example configuration.
+# Copy to clicktrics.yaml and edit. Flags: --config=clicktrics.yaml
+
+# Host label attached to every sample. Defaults to os.Hostname().
+# Override via the CLICKTRICS_HOST env var or set here.
+# host: my-host-01
+
+# Consecutive failures tolerated per collector before it self-disables for
+# the remainder of the process lifetime.
+error_budget: 10
+
+exporter:
+  # type: stdout | clickhouse
+  # stdout emits JSON lines (useful for bring-up and debugging).
+  type: stdout
+
+  clickhouse:
+    # The DSN is the single source of truth for the connection, including the
+    # target database (path segment). Supported forms:
+    #
+    #   clickhouse://user:pass@host:9000/db               → native, plain
+    #   clickhouse://user:pass@host:9440/db?secure=true   → native over TLS
+    #   http://user:pass@host:8123/db                     → HTTP, plain
+    #   https://user:pass@host:443/db?secure=true         → HTTP over TLS
+    #
+    # For `https://`, both the scheme AND `?secure=true` are required —
+    # the driver needs both signals to populate its TLS config. The app
+    # errors on startup if the DSN doesn't specify a database.
+    dsn: "clickhouse://default:@localhost:9000/clicktrics"
+    # Client-side buffer flush cadence. ClickHouse insert always uses
+    # async_insert=1 so this is the per-table Go buffer drain interval, not
+    # the CH write batch size.
+    flush_interval: 1s
+    # Max time allowed for a single table's prepare + append + send round
+    # trip. HTTP mode issues a DESCRIBE round trip before INSERT, so this
+    # needs headroom for any WAN path. Flushes run in parallel per table.
+    send_timeout: 30s
+    # Bounded in-memory row buffer per table. On overflow, oldest rows drop
+    # and a counter is logged.
+    queue_size: 100000
+
+# Per-collector toggles. Unknown keys are ignored, so newer configs are safe
+# on older binaries. Every collector defaults to disabled; enable only what
+# you want. Names must match the keys in the internal registry — listed
+# below with their target table and typical cadence.
+collectors:
+
+  # --- CPU ---
+  cpu:                 # → cpu_core_stats
+    enabled: true
+    interval: 1s
+  sysstats:            # → cpu_system_stats (load, ctxt, intr, run queue)
+    enabled: true
+    interval: 1s
+  msr:                 # → cpu_power (Intel RAPL; linux + CAP_SYS_RAWIO)
+    enabled: true
+    interval: 1s
+
+  # --- Memory ---
+  memory:              # → memory_stats (/proc/meminfo snapshot)
+    enabled: true
+    interval: 1s
+  vmstat:              # → memory_vmstat (cumulative: faults, swap, OOM)
+    enabled: true
+    interval: 5s
+
+  # --- Pressure ---
+  pressure:            # → pressure_stall (PSI; kernel 4.20+)
+    enabled: true
+    interval: 1s
+
+  # --- Disk / Filesystem ---
+  disk:                # → disk_io (/proc/diskstats per device)
+    enabled: true
+    interval: 1s
+  filesystem:          # → filesystem_stats (per mount, via statfs)
+    enabled: true
+    interval: 10s
+
+  # --- Network ---
+  network:             # → network_interface (per-NIC counters + link state)
+    enabled: true
+    interval: 1s
+  network_tcp:         # → network_tcp (/proc/net/snmp + netstat)
+    enabled: true
+    interval: 5s
+  sockets:             # → network_socket_states (parses /proc/net/tcp*)
+    enabled: true
+    interval: 10s
+  conntrack:           # → network_conntrack (netfilter table utilisation)
+    enabled: true
+    interval: 10s
+
+  # --- Processes ---
+  process:             # → process_stats + process_summary (all PIDs)
+    enabled: true
+    interval: 10s
+
+  # --- System ---
+  sysinfo:             # → system_info (uptime, users, FDs, kernel/os)
+    enabled: true
+    interval: 10s
+
+  # --- Storage health ---
+  smart:               # → smart_stats (NVMe + ATA; linux-only)
+    enabled: true
+    interval: 60s

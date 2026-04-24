@@ -1,0 +1,8 @@
+/dist/
+/clicktrics
+*.test
+coverage.out
+coverage.html
+.DS_Store
+.idea/
+.vscode/

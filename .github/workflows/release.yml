@@ -1,0 +1,146 @@
+name: release
+
+# Triggers on Major.Minor.Patch tags only (vX.Y.Z). Patterns like
+# v1.2.3-rc1 also match because the third glob segment eats "3-rc1" —
+# that's intentional so release candidates still fire the workflow.
+# Pushes like "v1.2" or untagged branches do not trigger.
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag to build (e.g. v0.1.0 — must exist in the repo)"
+        required: true
+
+permissions:
+  contents: write   # required to upload assets to GitHub Releases
+
+jobs:
+  binaries:
+    name: build binary + .deb
+    runs-on: ubuntu-latest
+    env:
+      GOOS: linux
+      GOARCH: amd64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+          # fetch-depth: 0 so the Makefile's `git describe --tags --dirty`
+          # fallback resolves correctly on workflow_dispatch runs.
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+          cache: true
+
+      - name: install nfpm
+        run: go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
+
+      - name: build binary + .deb
+        env:
+          # GITHUB_REF_NAME on a tag push is the tag itself (e.g. "v0.1.0").
+          # On workflow_dispatch it's the default branch name, so we prefer
+          # the explicit input instead.
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          # Sanity-check: the tag must be vX.Y.Z-ish.
+          if ! [[ "${TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-.+)?$ ]]; then
+            echo "::error::tag '${TAG}' does not match vX.Y.Z pattern"
+            exit 1
+          fi
+
+          # VERSION is passed through verbatim so the binary's
+          # ldflags-baked `main.versionStr` exactly matches the tag
+          # (e.g. "v0.1.0"). The Makefile strips the leading 'v' for the
+          # .deb Version field internally.
+          make VERSION="${TAG}" build-linux-amd64 deb-amd64
+
+          DEB_VERSION="${TAG#v}"
+          (cd dist && sha256sum \
+             "clicktrics-linux-amd64" \
+             "clicktrics_${DEB_VERSION}_amd64.deb" \
+             > "clicktrics-amd64.sha256")
+
+      - name: verify version baked into binary matches the tag
+        env:
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          reported=$(./dist/clicktrics-linux-amd64 --version | awk '{print $2}')
+          if [ "${reported}" != "${TAG}" ]; then
+            echo "::error::binary reports '${reported}' but tag is '${TAG}'"
+            exit 1
+          fi
+          echo "Binary version OK: ${reported}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clicktrics-linux-amd64
+          path: |
+            dist/clicktrics-linux-amd64
+            dist/clicktrics_*_amd64.deb
+            dist/clicktrics-amd64.sha256
+          retention-days: 30
+
+  github-release:
+    name: attach assets to GitHub Release
+    needs: binaries
+    # Only publish on actual tag pushes; workflow_dispatch runs still build
+    # artifacts (useful for pre-release testing) but don't create releases.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: list artifacts
+        run: ls -lh dist/
+
+      # Compute the dpkg-style version (tag with the leading 'v' stripped) so
+      # the release body below can inline it literally — no shell vars on the
+      # user-facing side.
+      - name: compute deb version
+        id: ver
+        run: echo "deb_version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+          append_body: true
+          fail_on_unmatched_files: true
+          body: |
+            ## Install (linux/amd64)
+
+            ### Debian / Ubuntu
+            ```sh
+            curl -sSL -o /tmp/clicktrics.deb "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/clicktrics_${{ steps.ver.outputs.deb_version }}_amd64.deb"
+            sudo dpkg -i /tmp/clicktrics.deb
+            ```
+
+            ### Static binary
+            ```sh
+            curl -sSL -o /tmp/clicktrics "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/clicktrics-linux-amd64"
+            sudo install -m 0755 /tmp/clicktrics /usr/local/bin/clicktrics
+            ```
+
+            After install, apply the ClickHouse schema:
+            ```sh
+            sudo clicktrics migrate up
+            ```
+
+            Verify the asset against the shipped `clicktrics-amd64.sha256`:
+            ```sh
+            sha256sum -c clicktrics-amd64.sha256
+            ```
+
+            The binary knows its own version; running hosts compare themselves
+            against this release via the background GitHub-API poller and
+            expose the result on `:9090/metrics` as
+            `clicktrics_update_available` and `clicktrics_upstream_release_info`.
